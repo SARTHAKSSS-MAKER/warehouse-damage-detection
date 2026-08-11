@@ -60,24 +60,39 @@ function App() {
     setIsDetecting(false)
   }
 
-  const startDetection = () => {
-    if (!selectedFile) return
+  const startDetection = async () => {
+  if (!selectedFile) return
 
-    setIsDetecting(true)
-    setShowResults(false)
+  setIsDetecting(true)
+  setShowResults(false)
 
-    /*
-      Temporary frontend simulation.
+  try {
+    const formData = new FormData()
+    formData.append('file', selectedFile)
 
-      Later this button will send the video
-      to our AI/backend detection API.
-    */
+    const response = await fetch('http://127.0.0.1:8000/upload', {
+      method: 'POST',
+      body: formData,
+    })
 
-    setTimeout(() => {
-      setIsDetecting(false)
-      setShowResults(true)
-    }, 2000)
+    if (!response.ok) {
+      throw new Error('Video upload failed')
+    }
+
+    const data = await response.json()
+
+    console.log('Backend response:', data)
+
+    setIsDetecting(false)
+    setShowResults(true)
+  } catch (error) {
+    console.error('Upload error:', error)
+
+    setIsDetecting(false)
+
+    alert('Could not connect to the backend. Please try again.')
   }
+}
 
   useEffect(() => {
     return () => {
