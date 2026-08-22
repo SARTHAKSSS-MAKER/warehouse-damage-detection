@@ -1,4 +1,4 @@
-import { useEffect, useState } from 
+import { useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
