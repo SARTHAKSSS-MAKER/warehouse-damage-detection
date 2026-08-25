@@ -1,7 +1,15 @@
-import { useEffect, useState } from 
+import { useEffect, useState, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './App.css'
 
+gsap.registerPlugin(ScrollTrigger)
+
 function App() {
+  const heroRef = useRef(null)
+  const heroTitleRef = useRef(null)
+  const heroDescriptionRef = useRef(null)
+  const heroButtonRef = useRef(null)
   const [selectedFile, setSelectedFile] = useState(null)
   const [videoUrl, setVideoUrl] = useState('')
   const [isDragging, setIsDragging] = useState(false)
@@ -94,6 +102,38 @@ function App() {
   }
 }
 
+useEffect(() => {
+  const ctx = gsap.context(() => {
+
+    const tl = gsap.timeline()
+
+    tl.from(heroTitleRef.current, {
+      y: 100,
+      opacity: 0,
+      duration: 1.2,
+      ease: 'power4.out'
+    })
+
+    tl.from(heroDescriptionRef.current, {
+      y: 40,
+      opacity: 0,
+      duration: 0.8,
+      ease: 'power3.out'
+    }, '-=0.7')
+
+    tl.from(heroButtonRef.current, {
+      y: 30,
+      opacity: 0,
+      scale: 0.9,
+      duration: 0.7,
+      ease: 'back.out(1.7)'
+    }, '-=0.5')
+
+  }, heroRef.current)
+
+  return () => ctx.revert()
+}, [])
+
   useEffect(() => {
     return () => {
       if (videoUrl) {
@@ -138,12 +178,16 @@ function App() {
           AI-POWERED WAREHOUSE INSPECTION
         </p>
 
-        <h1 className="hero-title">
+        <h1 className="hero-title"
+        ref = {heroTitleRef}
+        >
           <span>Detect Package</span>
           <span>Damage Smarter.</span>
         </h1>
 
-        <p className="hero-description">
+        <p className="hero-description"
+          ref = {heroDescriptionRef}
+          >
           Upload a warehouse video and let our AI system
           detect damaged packages automatically.
         </p>
@@ -151,6 +195,7 @@ function App() {
         <a
           href="#detection"
           className="detect-button"
+          ref={heroButtonRef}
         >
           Start Detection
         </a>
@@ -165,6 +210,7 @@ function App() {
       <section
         id="detection"
         className="detection-section"
+        ref = {heroRef}
       >
 
         <div className="detection-container">
