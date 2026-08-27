@@ -200,7 +200,7 @@ useEffect(() => {
           Start Detection
         </a>
 
-      </section
+      </section>
 
 
       {/* ================================
