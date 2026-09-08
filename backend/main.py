@@ -13,7 +13,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-UPLOAD_DIR = "uploads"
+UPLOAD_DI = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
